@@ -1,7 +1,3 @@
 >>>>>> TestGit >>>>>>
   GitVersion;
 <<<<<< TestGit <<<<<<
-
->>>>>> Recovery >>>>>>
-  Enable=1;
-<<<<<< Recovery <<<<<<
