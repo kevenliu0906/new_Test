@@ -1,0 +1,3 @@
+Pulsefire MainBoard Test (Part No. 704000030330) v1.0.3.0
+SN	USB PID/VID	FW Version	LED_R	LED_G	LED_B	LED_W	Current(mA)	Button	Wheel	DPI	Time	TestTime	Result	ErrorCode	Misdescription
+gehoghiehgio	16D7/0951	1111	PASS	PASS	PASS	PASS	0.00	PASS	PASS	PASS	2018-9-28 13:49:03	0:26:76	PASS	 	 

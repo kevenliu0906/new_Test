@@ -1,0 +1,149 @@
+; Setup INF file for Primax IDD
+; Copyright (C) 2013, All rights reserved.
+
+[Version]
+Signature    = "$WINDOWS NT$"
+Class        = HIDClass
+ClassGuid    = {745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Provider     = %Provider%
+CatalogFile.NT = TPMXwdm.cat
+DriverVer    = 12/05/2017,%ProductVersion%
+
+[DestinationDirs]
+DefaultDestDir          = 12
+USB.Copy.NT             = 12
+
+[ControlFlags]
+ExcludeFromSelect.ntx86=*
+ExcludeFromSelect.ntamd64=*
+
+[SourceDisksNames]
+91 = %PMouseDisk%,
+
+[SourceDisksFiles.x86]
+TPMXwdm.sys = 91,\x86
+
+[SourceDisksFiles.amd64]
+TPMXwdm.sys = 91,\a64
+
+; Manufacturer Sections
+; ----------------------------------------
+[Manufacturer]
+%Mfg%  = PMouse,ntx86,NTAMD64
+
+[PMouse]
+%DeviceDesc% =SPac.Inst,USB\VID_0951&PID_16E4&mi_00
+%DeviceDesc% =SPac.Inst,USB\VID_0951&PID_16E4&mi_01
+%DeviceDesc% =SPac.Inst,USB\VID_0951&PID_16E4&mi_02
+
+[PMouse.ntx86]
+%DeviceDesc% =SPac.Inst,USB\VID_0951&PID_16E4&mi_00
+%DeviceDesc% =SPac.Inst,USB\VID_0951&PID_16E4&mi_01
+%DeviceDesc% =SPac.Inst,USB\VID_0951&PID_16E4&mi_02
+
+[PMouse.NTAMD64]
+%DeviceDesc% =SPac.Inst,USB\VID_0951&PID_16E4&mi_00
+%DeviceDesc% =SPac.Inst,USB\VID_0951&PID_16E4&mi_01
+%DeviceDesc% =SPac.Inst,USB\VID_0951&PID_16E4&mi_02
+
+;--------------------------------
+[SPac.Inst]
+CopyFiles   = USB.Copy
+
+[SPac.Inst.HW]
+AddReg		= SPac.Inst.HW.AddReg
+
+[SPac.Inst.Services]
+AddService 	= TPMXwdm,, TPMXwdm_Service_Inst, TPMXwdm_EventLog_Inst
+Include     = input.inf
+Needs       = HID_Inst.NT.Services
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[SPac.Inst.XP]
+CopyFiles   = USB.Copy
+
+[SPac.Inst.XP.HW]
+AddReg		= SPac.Inst.HW.AddReg
+
+[SPac.Inst.XP.Services]
+AddService 	= TPMXwdm,, TPMXwdm_Service_Inst, TPMXwdm_EventLog_Inst
+Include     = input.inf
+Needs       = HID_Inst.NT.Services
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[SPac.Inst.NT64]
+CopyFiles   = USB.Copy
+
+[SPac.Inst.NT64.HW]
+AddReg		= SPac.Inst.HW.AddReg
+
+[SPac.Inst.NT64.Services]
+AddService 	= TPMXwdm,, TPMXwdm_Service_Inst, TPMXwdm_EventLog_Inst
+Include     = input.inf
+Needs       = HID_Inst.NT.Services
+
+[SPac.Inst.HW.AddReg]
+HKR,,"LowerFilters",%REG_MULTI_SZ%,"TPMXwdm"
+
+;----------------------------------------
+; TPMXwdm Service Install - Windows NT
+;----------------------------------------
+[TPMXwdm_Service_Inst] 
+DisplayName    = %TPMXwdm.SvcDesc%
+ServiceType    = %SERVICE_KERNEL_DRIVER% 
+StartType      = %SERVICE_DEMAND_START% 
+ErrorControl   = %SERVICE_ERROR_NORMAL% 
+ServiceBinary  = %12%\TPMXwdm.sys 
+LoadOrderGroup = extended base
+
+[TPMXwdm_EventLog_Inst] 
+AddReg         = TPMXwdm_EventLog_Inst.AddReg 
+
+[TPMXwdm_EventLog_Inst.AddReg] 
+HKR,,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\drivers\TPMXwdm.sys" 
+HKR,,TypesSupported,%REG_DWORD%,7
+
+;---------------------------------------------------------------------------------------------------------------
+; Copy Files Section
+[USB.Copy]
+TPMXwdm.sys,,,0x00000004
+
+; ----------------------------------------
+; User-visible Strings
+[Strings]
+Provider    = "Primax IDD"
+Mfg         = "Primax IDD"
+
+; ======= Disk Name ==========
+PMouseDisk  = "TPMX Pac Driver Disk"
+
+; ======= Product Name ==========
+ProductVersion = "1.0.01.008"
+
+; ======= Device Names ==========
+DeviceDesc = "Primax IDD Device"
+
+
+; ======= Service Names =======
+TPMXwdm.SvcDesc = "USB TPMX Filter Driver"
+
+;  *******Non Localizable Strings******* 
+SERVICE_BOOT_START      = 0x0 
+SERVICE_SYSTEM_START    = 0x1 
+SERVICE_AUTO_START      = 0x2 
+SERVICE_DEMAND_START    = 0x3 
+SERVICE_DISABLED        = 0x4 
+
+SERVICE_KERNEL_DRIVER 	= 0x1 
+SERVICE_ERROR_IGNORE 	  = 0x0 
+SERVICE_ERROR_NORMAL   	= 0x1 
+SERVICE_ERROR_SEVERE 	  = 0x2 
+SERVICE_ERROR_CRITICAL 	= 0x3 
+
+SPSVCINST_ASSOCSERVICE  = 0X00000002
+
+REG_EXPAND_SZ	          = 0x00020000 
+REG_DWORD               = 0x00010001 
+REG_MULTI_SZ	          = 0x00010000
+
+
